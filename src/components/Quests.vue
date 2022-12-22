@@ -1,7 +1,7 @@
 <template>
 	<BRow>
 		<BCol>
-			<BCard v-for="(quest, index) in quests" :key="quest.index">
+			<BCard v-for="(quest, index) in quests" :key="index">
 				<BCardHeader>
 					<BButton v-b-toggle="`quest-${index}`">#{{ quest.index }} {{ quest.name }}</BButton>
 				</BCardHeader>
