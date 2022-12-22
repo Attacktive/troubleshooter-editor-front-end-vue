@@ -11,7 +11,7 @@
 		"deploy": "gh-pages -d dist"
 	},
 	"dependencies": {
-		"bootstrap": "^4.6.2",
+		"bootstrap": "^5.2.3",
 		"bootstrap-vue": "^2.23.1",
 		"gh-pages": "^4.0.0",
 		"lodash": "^4.17.21",
