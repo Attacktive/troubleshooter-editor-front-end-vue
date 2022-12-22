@@ -60,7 +60,7 @@
 
 			<footer class="text-right">
 				<BLink :href="gitHubUrl" target="_blank">
-					<img :src="github" alt="to the GitHub repository" width="48" height="48"/>
+					<img src="./assets/github.svg" alt="to the GitHub repository" width="48" height="48"/>
 				</BLink>
 			</footer>
 		</BContainer>
@@ -68,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import github from "./assets/github.svg";
 import { computed, ref } from "vue";
 import { apiRoot, gitHub as gitHubUrl } from "./constants";
 import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BContainer, BForm, BFormFile, BFormTextarea, BLink, BRow, BTab, BTabs } from "bootstrap-vue";
