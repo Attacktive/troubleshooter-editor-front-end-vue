@@ -18,7 +18,7 @@
 							<BButton :disabled="!fileSelected" @click="upload">Upload</BButton>
 						</BCol>
 						<BCol>
-							<BButton :disabled="!fileSelected || !fileUploaded">Save</BButton>
+							<BButton :disabled="!fileUploaded" @click="diff">Diff</BButton>
 						</BCol>
 					</BRow>
 				</BCol>
@@ -59,7 +59,7 @@
 			</BRow>
 
 			<footer class="text-right">
-				<BLink :href="gitHubUrl" target="_blank">
+				<BLink :href="gitHub" target="_blank">
 					<img src="./assets/github.svg" alt="to the GitHub repository" width="48" height="48"/>
 				</BLink>
 			</footer>
@@ -69,22 +69,26 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { apiRoot, gitHub as gitHubUrl } from "./constants";
+import { storeToRefs } from "pinia";
+import { apiRoot, gitHub } from "./constants";
 import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BContainer, BForm, BFormFile, BFormTextarea, BLink, BRow, BTab, BTabs } from "bootstrap-vue";
-import { parse } from "./types";
+import { defaultSaveData, parse } from "./types";
 import _ from "lodash";
 import Company from "./components/Company.vue";
 import { useStore } from "./store/store";
 import Items from "./components/Items.vue";
 import Rosters from "./components/Rosters.vue";
 import Quests from "./components/Quests.vue";
+import { diff as justDiff } from "just-diff";
+import { Ref, UnwrapRef } from "vue/types/v3-generated";
 
 const store = useStore();
 
-let fileUploaded = false;
+let initialData = defaultSaveData;
 
 const file = ref(null);
 const fileSelected = computed(() => !!file.value);
+const fileUploaded: Ref<UnwrapRef<boolean>> = ref(false);
 const fileForm = ref<HTMLFormElement | undefined>();
 
 const upload = () => {
@@ -99,14 +103,32 @@ const upload = () => {
 	)
 	.then(response => response.json())
 	.then(object => {
-		_.assign(store, parse(object));
-		fileUploaded = true;
+		initialData = parse(object);
+
+		store.company = _.cloneDeep(initialData.company);
+		store.items = _.cloneDeep(initialData.items);
+		store.rosters = _.cloneDeep(initialData.rosters);
+		store.quests = _.cloneDeep(initialData.quests);
+
+		fileUploaded.value = true;
 	})
 	.catch(error => {
 		console.log(error);
 
-		fileUploaded = false;
+		fileUploaded.value = false;
 	});
+};
+
+const diff = () => {
+	const ref = storeToRefs(store);
+	const toSave = {
+		company: ref.company.value,
+		items: ref.items.value,
+		rosters: ref.rosters.value,
+		quests: ref.quests.value
+	};
+
+	console.log("diff", justDiff(initialData, toSave));
 };
 
 const toShowData = ref(false);
