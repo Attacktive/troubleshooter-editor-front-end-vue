@@ -59,20 +59,6 @@ export const defaultCompany: CompanyInfo = Object.freeze({
 	}
 });
 
-export const defaultSaveData: SaveData = {
-	company: defaultCompany,
-	items: [],
-	quests: [],
-	rosters: []
-};
-
-export function initialize(saveData: SaveData) {
-	saveData.company = defaultCompany;
-	saveData.items = [];
-	saveData.quests = [];
-	saveData.rosters = [];
-}
-
 export function parse(object: object): SaveData {
 	if ("company" in object && "items" in object && "rosters" in object && "quests" in object) {
 		return {
