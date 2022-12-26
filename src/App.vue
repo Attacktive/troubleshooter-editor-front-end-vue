@@ -51,7 +51,7 @@
 						</BCardHeader>
 						<BCollapse v-model="toShowData">
 							<BCardBody>
-								<BFormTextarea :value="JSON.stringify(store)" :readOnly="true" rows="10"/>
+								<BFormTextarea :value="JSON.stringify(storeRepresentation)" :readOnly="true" rows="10"/>
 							</BCardBody>
 						</BCollapse>
 					</BCard>
@@ -80,6 +80,12 @@ import Rosters from "./components/Rosters.vue";
 import Quests from "./components/Quests.vue";
 
 const store = useStore();
+const storeRepresentation = computed(() => ({
+	company: store.company,
+	items: store.items,
+	rosters: store.rosters,
+	quests: store.quests
+}));
 
 let fileUploaded = false;
 
