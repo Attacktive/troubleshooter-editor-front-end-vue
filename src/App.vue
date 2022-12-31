@@ -59,7 +59,7 @@
 			</BRow>
 
 			<footer class="text-right">
-				<BLink :href="gitHubUrl" target="_blank">
+				<BLink :href="githubRepository" target="_blank">
 					<img src="./assets/github.svg" alt="to the GitHub repository" width="48" height="48"/>
 				</BLink>
 			</footer>
@@ -69,7 +69,6 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { apiRoot, gitHub as gitHubUrl } from "./constants";
 import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BContainer, BForm, BFormFile, BFormTextarea, BLink, BRow, BTab, BTabs } from "bootstrap-vue";
 import { parse } from "./types";
 import _ from "lodash";
@@ -78,6 +77,8 @@ import { useStore } from "./store/store";
 import Items from "./components/Items.vue";
 import Rosters from "./components/Rosters.vue";
 import Quests from "./components/Quests.vue";
+
+const githubRepository = import.meta.env.VITE_GITHUB_REPOSITORY;
 
 const store = useStore();
 const storeRepresentation = computed(() => ({
@@ -97,7 +98,7 @@ const upload = () => {
 	const formData = new FormData(fileForm.value);
 
 	fetch(
-		`${apiRoot}/upload`,
+		`${import.meta.env.VITE_API_ROOT}/upload`,
 		{
 			method: "post",
 			body: formData
