@@ -15,7 +15,7 @@
 		"bootstrap-vue": "^2.23.1",
 		"gh-pages": "^4.0.0",
 		"lodash": "^4.17.21",
-		"pinia": "^2.0.28",
+		"pinia": "^2.0.29",
 		"vue": "^2.7.14"
 	},
 	"devDependencies": {
