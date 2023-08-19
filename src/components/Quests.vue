@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BFormGroup, BFormInput, BRow } from "bootstrap-vue";
-import { useStore } from "../store/store";
+import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 
 const store = useStore();
