@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { BCol, BFormGroup, BFormInput, BFormSelect, BFormSelectOption, BRow } from "bootstrap-vue";
-import { useStore } from "../store/store";
+import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 
 const store = useStore();

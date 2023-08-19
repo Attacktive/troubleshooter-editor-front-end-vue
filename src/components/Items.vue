@@ -61,7 +61,7 @@
 
 <script lang="ts" setup>
 import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BFormDatalist, BFormGroup, BFormInput, BFormSelect, BFormSelectOption, BRow } from "bootstrap-vue";
-import { useStore } from "../store/store";
+import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 
 const store = useStore();

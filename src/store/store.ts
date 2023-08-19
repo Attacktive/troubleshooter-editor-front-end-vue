@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { defaultCompany, ItemCollection, QuestCollection, RosterCollection } from "../types";
+import { defaultCompany, ItemCollection, QuestCollection, RosterCollection } from "@/types";
 import { Ref, ref, UnwrapRef } from "vue";
 
 export const useStore = defineStore(
