@@ -50,24 +50,11 @@ export type QuestInfo = {
 
 export type QuestCollection = QuestInfo[];
 
-export const defaultCompany: CompanyInfo = Object.freeze({
+export const defaultCompany: CompanyInfo = {
 	id: 0,
 	name: "",
 	vill: 0,
 	properties: {
 		GameDifficulty: ""
 	}
-});
-
-export function parse(object: object): SaveData {
-	if ("company" in object && "items" in object && "rosters" in object && "quests" in object) {
-		return {
-			company: (object.company as CompanyInfo),
-			items: (object.items as ItemCollection),
-			rosters: (object.rosters as RosterCollection),
-			quests: (object.quests as QuestCollection)
-		};
-	} else {
-		throw new Error("An instance of SaveData is expected but apparently it's not.")
-	}
-}
+};

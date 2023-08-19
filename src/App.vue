@@ -1,5 +1,8 @@
 <template>
 	<main>
+		<BModal v-model="modalDetails.shown" :title="modalDetails.title" :ok-title="modalDetails.buttonText" ok-only>
+			{{ modalDetails.content }}
+		</BModal>
 		<BContainer fluid>
 			<BRow class="p-2">
 				<BCol>
@@ -18,7 +21,7 @@
 							<BButton :disabled="!fileSelected" @click="upload">Upload</BButton>
 						</BCol>
 						<BCol>
-							<BButton :disabled="!fileSelected || !fileUploaded">Save</BButton>
+							<BButton :disabled="!fileSelected || !fileUploaded" @click="save">Save</BButton>
 						</BCol>
 					</BRow>
 				</BCol>
@@ -69,14 +72,15 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BContainer, BForm, BFormFile, BFormTextarea, BLink, BRow, BTab, BTabs } from "bootstrap-vue";
-import { parse } from "./types";
-import _ from "lodash";
+import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BContainer, BForm, BFormFile, BFormTextarea, BLink, BModal, BRow, BTab, BTabs } from "bootstrap-vue";
+import { SaveData } from "./types/save-data";
 import Company from "./components/Company.vue";
 import { useStore } from "./store/store";
 import Items from "./components/Items.vue";
 import Rosters from "./components/Rosters.vue";
 import Quests from "./components/Quests.vue";
+import { ModalDetails } from "@/types/ui";
+import axios from "axios";
 
 const githubRepository = import.meta.env.VITE_GITHUB_REPOSITORY;
 
@@ -88,6 +92,19 @@ const storeRepresentation = computed(() => ({
 	quests: store.quests
 }));
 
+const modalDetails = ref<ModalDetails>({
+	shown: false,
+	title: "",
+	content: "",
+	buttonText: "OK"
+});
+
+const showModal = (title: string, content: string) => {
+	modalDetails.value.shown = true;
+	modalDetails.value.title = title;
+	modalDetails.value.content = content;
+}
+
 const fileUploaded = ref(false);
 
 const file = ref(null);
@@ -97,16 +114,10 @@ const fileForm = ref<HTMLFormElement | undefined>();
 const upload = () => {
 	const formData = new FormData(fileForm.value);
 
-	fetch(
-		`${import.meta.env.VITE_API_ROOT}/upload`,
-		{
-			method: "post",
-			body: formData
-		}
-	)
-	.then(response => response.json())
-	.then(object => {
-		_.assign(store, parse(object));
+	axios.post<SaveData>(`${import.meta.env.VITE_API_ROOT}/upload`, formData)
+	.then(response => response.data)
+	.then(saveData => {
+		store.$state = saveData;
 		fileUploaded.value = true;
 	})
 	.catch(error => {
@@ -114,6 +125,10 @@ const upload = () => {
 
 		fileUploaded.value = false;
 	});
+};
+
+const save = () => {
+	showModal("Error", "Sorry but not implemented yet!");
 };
 
 const toShowData = ref(false);
