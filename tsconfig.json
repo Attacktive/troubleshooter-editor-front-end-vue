@@ -16,8 +16,8 @@
 		"noEmit": true,
 		"types": ["vite/client"],
 		"paths": {
-			"@/*": ["src/*"],
-			"@/store/*": ["src/store/*"]
+			"@/*": ["./src/*"],
+			"@/store/*": ["./src/store/*"]
 		}
 	},
 	"include": ["src/**/*"]
