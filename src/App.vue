@@ -88,7 +88,7 @@ const storeRepresentation = computed(() => ({
 	quests: store.quests
 }));
 
-let fileUploaded = false;
+const fileUploaded = ref(false);
 
 const file = ref(null);
 const fileSelected = computed(() => !!file.value);
@@ -107,12 +107,12 @@ const upload = () => {
 	.then(response => response.json())
 	.then(object => {
 		_.assign(store, parse(object));
-		fileUploaded = true;
+		fileUploaded.value = true;
 	})
 	.catch(error => {
 		console.log(error);
 
-		fileUploaded = false;
+		fileUploaded.value = false;
 	});
 };
 
