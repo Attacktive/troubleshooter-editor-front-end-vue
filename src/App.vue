@@ -1,9 +1,12 @@
 <template>
-	<main>
+	<main id="main-container">
+		<BContainer v-if="fileUploadInProgress" id="spinner-container">
+			<BSpinner id="spinner"/>
+		</BContainer>
 		<BModal v-model="modalDetails.shown" :title="modalDetails.title" :ok-title="modalDetails.buttonText" ok-only>
 			{{ modalDetails.content }}
 		</BModal>
-		<BContainer fluid>
+		<BContainer ref="form" tag="form" fluid>
 			<BRow class="p-2">
 				<BCol>
 					<h1 class="text-center">Troubleshooter Editor</h1>
@@ -13,9 +16,7 @@
 				<BCol>
 					<BRow>
 						<BCol xs="4">
-							<BForm ref="fileForm" class="mt-2">
-								<BFormFile name="file" v-model="file" accept=".sav, .bak"/>
-							</BForm>
+							<BFormFile name="file" v-model="file" accept=".sav, .bak" clsas="mt-2"/>
 						</BCol>
 						<BCol xs="2">
 							<BButton :disabled="!fileSelected" @click="upload">Upload</BButton>
@@ -27,7 +28,7 @@
 				</BCol>
 			</BRow>
 
-			<BRow tag="form" ref="mainForm" class="mt-4">
+			<BRow class="mt-4">
 				<BCol>
 					<BTabs>
 						<BTab title="Company" key="company">
@@ -72,7 +73,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BContainer, BForm, BFormFile, BFormTextarea, BLink, BModal, BRow, BTab, BTabs } from "bootstrap-vue";
+import { BButton, BCard, BCardBody, BCardHeader, BCol, BCollapse, BContainer, BFormFile, BFormTextarea, BLink, BModal, BRow, BSpinner, BTab, BTabs } from "bootstrap-vue";
 import { SaveData } from "./types/save-data";
 import Company from "./components/Company.vue";
 import { useStore } from "./store/store";
@@ -105,30 +106,36 @@ const showModal = (title: string, content: string) => {
 	modalDetails.value.content = content;
 }
 
-const fileUploaded = ref(false);
-
+const form = ref();
 const file = ref(null);
 const fileSelected = computed(() => !!file.value);
-const fileForm = ref<HTMLFormElement | undefined>();
+const fileUploaded = ref(false);
+const fileUploadInProgress = ref(false);
 
 const upload = () => {
-	const formData = new FormData(fileForm.value);
+	fileUploadInProgress.value = true;
+
+	const formData = new FormData(form.value);
 
 	axios.post<SaveData>(`${import.meta.env.VITE_API_ROOT}/upload`, formData)
-	.then(response => response.data)
-	.then(saveData => {
-		store.$state = saveData;
-		fileUploaded.value = true;
-	})
-	.catch(error => {
-		console.log(error);
+		.then(response => response.data)
+		.then(saveData => {
+			store.$state = saveData;
+			fileUploaded.value = true;
+		})
+		.catch(error => {
+			console.error(error);
+			showModal("Error", "Failed to upload the save data.");
 
-		fileUploaded.value = false;
-	});
+			fileUploaded.value = false;
+		})
+		.finally(() => fileUploadInProgress.value = false);
 };
 
 const save = () => {
 	showModal("Error", "Sorry but not implemented yet!");
+
+	fileUploadInProgress.value = true;
 };
 
 const toShowData = ref(false);
@@ -138,4 +145,31 @@ const toggleCollapse = () => (toShowData.value = !toShowData.value);
 
 <style>
 @import "bootstrap/dist/css/bootstrap.css";
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
+#main-container {
+	width: 100%;
+	height: 100%;
+}
+
+#spinner-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	background-color: #80808080;
+}
+
+#spinner-container > #spinner {
+	width: 6rem;
+	height: 6rem;
+	margin-top: 45%;
+	margin-left: 45%;
+}
 </style>
