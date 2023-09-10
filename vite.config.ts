@@ -8,6 +8,9 @@ import vue2 from "@vitejs/plugin-vue2";
 export default defineConfig({
 	base: "",
 	envDir: "env",
+	server: {
+		host: true
+	},
 	plugins: [
 		vue2(),
 		legacy({
