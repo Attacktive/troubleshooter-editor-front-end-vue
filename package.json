@@ -17,7 +17,7 @@
 		"gh-pages": "^6.0.0",
 		"lodash": "^4.17.21",
 		"pinia": "^2.1.7",
-		"vue": "^2.7.14"
+		"vue": "^2.7.15"
 	},
 	"devDependencies": {
 		"@rushstack/eslint-patch": "^1.5.1",
