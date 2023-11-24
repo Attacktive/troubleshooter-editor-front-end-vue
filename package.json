@@ -20,7 +20,6 @@
 	},
 	"devDependencies": {
 		"@rushstack/eslint-patch": "^1.6.0",
-		"@types/axios": "^0.14.0",
 		"@types/lodash": "^4.14.202",
 		"@types/node": "^20.9.4",
 		"@vitejs/plugin-legacy": "^4.1.1",
