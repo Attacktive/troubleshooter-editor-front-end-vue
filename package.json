@@ -19,7 +19,7 @@
 		"vue": "^2.7.16"
 	},
 	"devDependencies": {
-		"@rushstack/eslint-patch": "^1.6.1",
+		"@rushstack/eslint-patch": "^1.7.0",
 		"@types/lodash": "^4.14.202",
 		"@types/node": "^20.11.5",
 		"@vitejs/plugin-legacy": "^5.2.0",
